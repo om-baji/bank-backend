@@ -1,0 +1,11 @@
+spring.application.name=email-svc
+server.port=9090
+
+spring.mail.host=smtp.gmail.com
+spring.mail.port=587
+spring.mail.username=XXXXX
+spring.mail.password=XXXX
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+
+spring.kafka.bootstrap-serve=localhost:9092

@@ -1,6 +1,7 @@
 package com.example.email_svc.config;
 
 import com.example.email_svc.models.ConsumerObject;
+import com.example.email_svc.models.StatementDTO;
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.common.serialization.Deserializer;
 import org.apache.kafka.common.serialization.StringDeserializer;
@@ -37,6 +38,34 @@ public class KafkaConsumerConfig {
                 new StringDeserializer(),
                 deserializer
         );
+    }
+
+    @Bean
+    public ConsumerFactory<String, StatementDTO> consumerFactoryStatement() {
+        Map<String, Object> config = new HashMap<>();
+
+        config.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG , "localhost:9092");
+        config.put(ConsumerConfig.GROUP_ID_CONFIG, "micro-1");
+        config.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG, StringDeserializer.class);
+
+        JsonDeserializer<StatementDTO> deserializer = new JsonDeserializer<>(StatementDTO.class);
+        deserializer.setRemoveTypeHeaders(false);
+        deserializer.addTrustedPackages("*");
+        deserializer.setUseTypeMapperForKey(true);
+
+        return new DefaultKafkaConsumerFactory<>(
+                config,
+                new StringDeserializer(),
+                deserializer
+        );
+    }
+
+    @Bean
+    public ConcurrentKafkaListenerContainerFactory<String, StatementDTO> kafkaListenerContainerFactoryStatement() {
+        ConcurrentKafkaListenerContainerFactory<String, StatementDTO> factory =
+                new ConcurrentKafkaListenerContainerFactory<>();
+        factory.setConsumerFactory(consumerFactoryStatement());
+        return factory;
     }
 
     @Bean
