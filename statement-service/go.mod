@@ -3,13 +3,16 @@ module statement-service
 go 1.23.3
 
 require (
+	github.com/cloudinary/cloudinary-go v1.7.0
+	github.com/cloudinary/cloudinary-go/v2 v2.10.0
+	github.com/confluentinc/confluent-kafka-go v1.9.2
 	github.com/gofiber/fiber/v2 v2.52.8
 	github.com/joho/godotenv v1.5.1
+	github.com/jung-kurt/gofpdf v1.16.2
 )
 
 require (
 	github.com/andybalholm/brotli v1.1.1 // indirect
-	github.com/cloudinary/cloudinary-go/v2 v2.10.0 // indirect
 	github.com/creasty/defaults v1.8.0 // indirect
 	github.com/google/uuid v1.6.0 // indirect
 	github.com/gorilla/schema v1.4.1 // indirect

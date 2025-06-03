@@ -6,6 +6,7 @@ import (
 	"log"
 	"os"
 	"os/signal"
+	"statement-service/internal/handlers"
 	"statement-service/internal/server"
 	"strconv"
 	"syscall"
@@ -15,7 +16,6 @@ import (
 )
 
 func gracefulShutdown(fiberServer *server.FiberServer, done chan bool) {
-	// Create context that listens for the interrupt signal from the OS.
 	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
 	defer stop()
 
@@ -44,8 +44,12 @@ func main() {
 
 	server.RegisterFiberRoutes()
 
-	// Create a done channel to signal when the shutdown is complete
 	done := make(chan bool, 1)
+
+	ctx, stop := signal.NotifyContext(context.Background(), syscall.SIGINT, syscall.SIGTERM)
+	defer stop()
+
+	go handlers.ConsumerHandler(ctx)
 
 	go func() {
 		port, _ := strconv.Atoi(os.Getenv("PORT"))
@@ -55,10 +59,11 @@ func main() {
 		}
 	}()
 
-	// Run graceful shutdown in a separate goroutine
 	go gracefulShutdown(server, done)
 
-	// Wait for the graceful shutdown to complete
 	<-done
+	log.Println("Graceful shutdown complete.")
+
+	<-ctx.Done()
 	log.Println("Graceful shutdown complete.")
 }

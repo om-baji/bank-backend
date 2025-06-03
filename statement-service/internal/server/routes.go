@@ -1,7 +1,7 @@
 package server
 
 import (
-	api "statement-service/internal/health"
+	"statement-service/internal/handlers"
 
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
@@ -21,7 +21,8 @@ func (s *FiberServer) RegisterFiberRoutes() {
 	s.App.Use(logger.New())
 
 	s.App.Get("/", s.HelloWorldHandler)
-	s.App.Get("/status", api.HealthHandler)
+	s.App.Get("/status", handlers.HealthHandler)
+	s.App.Post("/statement", handlers.StatementHandler)
 }
 
 func (s *FiberServer) HelloWorldHandler(c *fiber.Ctx) error {
