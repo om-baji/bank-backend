@@ -15,6 +15,12 @@ A scalable, event-driven monorepo for financial microservices. Built with a modu
 
 ---
 
+## System Architechture
+
+![image](https://github.com/user-attachments/assets/209533a4-ebe1-4c55-8d07-fe623c72a0a0)
+
+---
+
 ## 🏦 Bank Service
 
 A modular Spring Boot microservice for core banking operations.
