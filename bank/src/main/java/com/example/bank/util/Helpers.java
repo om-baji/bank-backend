@@ -1,13 +1,15 @@
 package com.example.bank.util;
 
+import com.example.bank.models.StatementBody;
 import com.example.bank.models.TransactionDTO;
 import com.example.bank.models.Transactions;
 import com.example.bank.repository.AccountRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
+import org.springframework.http.*;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.web.client.RestTemplate;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -16,8 +18,13 @@ import java.util.Map;
 @Component
 public class Helpers {
 
+    private String url = "";
+
     @Autowired
     private AccountRepository accountRepository;
+
+    @Autowired
+    private RestTemplate template;
 
     public String generateUniqueAccountNumber() {
         String accountNumber;
@@ -116,5 +123,36 @@ public class Helpers {
 
         return authentication.getName();
     }
+
+    public ResponseEntity<String> getStatement(StatementBody body,Boolean isMonthly) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<StatementBody> request = new HttpEntity<>(body, headers);
+
+        ResponseEntity<String> response = template.exchange(
+                url + "?monthly=" + isMonthly,
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+
+        return response;
+    }
+
+    public void getStatement(StatementBody body) {
+        HttpHeaders headers = new HttpHeaders();
+        headers.setContentType(MediaType.APPLICATION_JSON);
+
+        HttpEntity<StatementBody> request = new HttpEntity<>(body, headers);
+
+        template.exchange(
+                url,
+                HttpMethod.POST,
+                request,
+                String.class
+        );
+    }
+
 
 }

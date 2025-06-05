@@ -154,6 +154,14 @@ public class TransactionService {
         return list;
     }
 
+    public List<Transactions> getBulk() {
+        return repository.findAll();
+    }
+
+    public List<Transactions> findAllByUsername(String username) {
+        return repository.findAllByUsername(username);
+    }
+
 //    public TransactionDTO createUserTxn(UserTransactionSchema schema) {
 //
 //        TransactionDTO txn = TransactionDTO.builder()
