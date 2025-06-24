@@ -4,7 +4,7 @@ spring:
   application:
     name: user-service
   datasource:
-    url: jdbc:postgresql://ep-patient-glade-a15plr4m-pooler.ap-southeast-1.aws.neon.tech/mybank?user=mybank_owner&password=npg_a9qvm5bfLIWC&sslmode=require
+    url: jdbc:db-url
   jpa:
     hibernate:
       ddl-auto: update
@@ -17,4 +17,4 @@ admin:
   secret: mySecretKey
 
 jwt:
-  secret: SmzSzMmWkn8t3ejUZ6ZBuVM74l6GWoFb7SoDcNHweu9HN3wqPV+hA0U5aTvmjISmf0o+cLqoltxR95a9a2NWnzqZe9h18+e9qPh9kFxW6giyXeYa+6rSqCUx3jJ77PDc2exGYaX3MkRXeF1so/y87iIABhvYWiN+GkpRyTT+rumr228axxzRg7Vo4ujG6xmCyTS0PUX0npOQt/fBDwAALbzUOfWZFA3Pqdm6rjjIdRccJAwuRhB+Ntz4PkIURkv0WUUvWyrXt6XQikXEHYm5WZZTBg2Aw7BgqwHiqyrWRrED1gEKLEQbXlTQn27xndGw33sPVv8rldY3PdfmwMi/lg==
+  secret: yourSecret
