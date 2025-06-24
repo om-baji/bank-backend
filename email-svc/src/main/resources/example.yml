@@ -1,8 +1,8 @@
 spring:
   application:
-    name:"email-svc"
+    name: email-svc
   mail:
-    host:smtp.gmail.com
-    port:587
-    username:ombaji006@gmail.com
-    password:tjaw eqmf hnuv rfmd
+    host: smtp.gmail.com
+    port: 587
+    username: xxxxx
+    password: xxx
