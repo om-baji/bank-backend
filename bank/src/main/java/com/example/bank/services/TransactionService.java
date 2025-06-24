@@ -159,7 +159,11 @@ public class TransactionService {
     }
 
     public List<Transactions> findAllByUsername(String username) {
-        return repository.findAllByUsername(username);
+        List<Accounts> accounts =  accountRepository.findByUser_Username(username);
+        List<Transactions> transactions = new ArrayList<>();
+        accounts.stream().map(account -> repository.findByFromAccount_IdOrToAccount_Id(account.getId(),account.getId()));
+
+        return transactions;
     }
 
 //    public TransactionDTO createUserTxn(UserTransactionSchema schema) {

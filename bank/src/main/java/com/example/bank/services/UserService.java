@@ -6,8 +6,12 @@ import com.example.bank.models.Transactions;
 import com.example.bank.models.Users;
 import com.example.bank.repository.UserRepository;
 import com.example.bank.schemas.LoginSchema;
+import com.example.bank.schemas.RegisterResponse;
 import com.example.bank.schemas.RegisterSchema;
 import com.example.bank.util.Helpers;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -22,6 +26,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class UserService {
 
     @Autowired
@@ -41,7 +46,9 @@ public class UserService {
 
     private BCryptPasswordEncoder encoder = new BCryptPasswordEncoder(12);
 
-    public Users saveUser(RegisterSchema registerSchema) {
+    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
+
+    public RegisterResponse saveUser(RegisterSchema registerSchema) {
         Users user = Users
                 .builder()
                 .first_name(registerSchema.getFirstName())
@@ -50,8 +57,8 @@ public class UserService {
                 .username(registerSchema.getUsername())
                 .password(encoder.encode(registerSchema.getPassword()))
                 .build();
-
-        return repository.save(user);
+        logger.info("User is created!");
+        return RegisterResponse.fromUserDTO(repository.save(user));
     }
 
     public String loginUser(LoginSchema loginSchema) {

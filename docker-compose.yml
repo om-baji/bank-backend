@@ -1,0 +1,52 @@
+version: "1.2"
+services:
+  postgres:
+    image: "postgres"
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_USER: "postgres"
+      POSTGRES_PASSWORD: "mySecretKey"
+      POSTGRES_DB: "mybank"
+    volumes:
+      - "./db-data:/var/lib/postgresql/data"
+  kafka:
+    image: "apache/kafka"
+    ports:
+      - "9092:9092"
+  prometheus:
+    image: "prometheus"
+    ports:
+      - "9000:9000"
+  grafana:
+    image: "grafana/grafana-oss"
+    ports:
+      - "3000:3000"
+  bank:
+    build: "./bank"
+    container_name: "bank-svc"
+    depends_on:
+      - "postgres"
+      - "kafka"
+      - "grafana"
+      - "prometheus"
+    ports:
+      - "8080:8080"
+  email:
+    build: "./email-svc"
+    container_name: "email-svc"
+    depends_on:
+      - "kafka"
+      - "grafana"
+      - "prometheus"
+    ports:
+      - "7070:8080"
+  statement:
+    build: "./statement-svc"
+    container_name: "statement-svc"
+    depends_on:
+      - "kafka"
+      - "grafana"
+      - "prometheus"
+    ports:
+      - "6060:8080"

@@ -2,12 +2,14 @@ package com.example.bank.controllers;
 
 import com.example.bank.models.Users;
 import com.example.bank.schemas.LoginSchema;
+import com.example.bank.schemas.RegisterResponse;
 import com.example.bank.schemas.RegisterSchema;
 import com.example.bank.services.CustomUserService;
 import com.example.bank.services.JwtService;
 import com.example.bank.services.RefreshTokenService;
 import com.example.bank.services.UserService;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,11 +17,13 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Map;
 
 @RestController
+@RequestMapping("/api/user")
 public class AuthController {
     @Autowired
     private UserService service;
@@ -34,7 +38,7 @@ public class AuthController {
     private CustomUserService userService;
 
     @PostMapping("/register")
-    public Users register(@RequestBody RegisterSchema registerSchema) {
+    public RegisterResponse register(@RequestBody RegisterSchema registerSchema) {
         return service.saveUser(registerSchema);
     }
 
@@ -42,7 +46,7 @@ public class AuthController {
     public String login(@RequestBody LoginSchema loginSchema) {
         String token =  service.loginUser(loginSchema);
 
-        return (token != null)? token : "Something went wrong!";
+        return (token != null) ? token : "Something went wrong!";
     }
 
     @PostMapping("/refresh")

@@ -18,7 +18,8 @@ func Consumer() *kafka.Consumer {
 		log.Panic("Something went wrong!", err)
 	}
 
-	topic := "bank.statement.event"
+	// topic := "bank.statement.event"
+	topic := "statement.generate"
 
 	err = consumer.Subscribe(topic, nil)
 

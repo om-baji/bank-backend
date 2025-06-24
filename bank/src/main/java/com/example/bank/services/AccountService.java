@@ -101,6 +101,8 @@ public class AccountService {
 
         Users user = exists.get();
 
+//        if(user.getUsername() != helper.getCurrentUsername())
+
         String currencyCode = accountBody.getCurrencyCode();
 
         CurrencyManager.getDecimals(currencyCode);

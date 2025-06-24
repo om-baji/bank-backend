@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"encoding/json"
+	"fmt"
 	"statement-service/internal/events"
 	"statement-service/internal/models"
 
@@ -10,6 +11,10 @@ import (
 
 func StatementHandler(c *fiber.Ctx) error {
 	var consumer models.ConsumerObject
+
+	isMonthly := c.Query("monthly")
+
+	fmt.Println(isMonthly)
 
 	if err := c.BodyParser(&consumer); err != nil {
 		return c.Status(fiber.StatusBadRequest).JSON(fiber.Map{
