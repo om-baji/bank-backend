@@ -5,8 +5,6 @@ import com.bank.user_service.schemas.LoginSchema;
 import com.bank.user_service.schemas.RegisterSchema;
 import com.bank.user_service.services.JwtService;
 import com.bank.user_service.services.UserService;
-import jakarta.persistence.GeneratedValue;
-import org.apache.kafka.common.security.auth.Login;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

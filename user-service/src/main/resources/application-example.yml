@@ -1,10 +1,13 @@
 server:
   port: 4000
+
 spring:
   application:
     name: user-service
+
   datasource:
     url: jdbc:db
+
   jpa:
     hibernate:
       ddl-auto: update
@@ -18,3 +21,19 @@ admin:
 
 jwt:
   secret: secret
+
+springdoc:
+  swagger-ui:
+    path: /docs
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics,prometheus
+  endpoint:
+    prometheus:
+      enabled: true
+  metrics:
+    tags:
+      application: ${spring.application.name}
