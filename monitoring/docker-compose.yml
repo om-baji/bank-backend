@@ -1,0 +1,12 @@
+version: "1.2"
+services:
+  user-service:
+    build:
+      context: '.'
+    ports:
+      - "4000:4000"
+  transaction-service:
+    build:
+      context: '.'
+    ports:
+      - "7000:7000"
