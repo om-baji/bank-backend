@@ -1,0 +1,31 @@
+package com.bank.notification_service.models;
+
+import com.bank.notification_service.enums.TransactionStatus;
+import com.bank.notification_service.enums.TransactionType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+public class Transaction {
+
+    private String id;
+
+    private Long amount;
+    private String currencyCode;
+    private String fromAccount;
+    private String toAccount;
+    private Date initiatedAt;
+    private Date completedAt;
+    private TransactionStatus status;
+
+    private TransactionType Type;
+    private String userId;
+}
+
