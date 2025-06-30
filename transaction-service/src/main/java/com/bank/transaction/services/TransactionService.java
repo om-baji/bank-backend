@@ -64,12 +64,14 @@ public class TransactionService {
         if (!fromAccount.getAccountNumber().equals(transactionSchema.getFrom()) ||
                 !fromAccount.getCurrencyCode().equals(transactionSchema.getCurrency()) ||
                 !toAccount.getCurrencyCode().equals(transactionSchema.getCurrency())) {
-            producer.messageProducer(CONFLICTED_TOPIC, new HashMap<>());
-            producer.messageProducer(NOTIFICATION_TOPIC,new HashMap<>());
+            Map<String,Object> map = new HashMap<>();
+            map.put("TYPE", "CONFLICT");
+            map.put("TRANSACTION", transactionSchema);
+            producer.messageProducer(CONFLICTED_TOPIC, map);
+            map.put("TYPE", "NOTIFICATION");
+            producer.messageProducer(NOTIFICATION_TOPIC,map);
             return ResponseEntity.status(411).body("CONFLICTED ACCOUNTS!");
         }
-
-        producer.messageProducer(TRANSACTION_TOPIC, new HashMap<>());
 
         Transaction transaction = Transaction
                 .builder()
@@ -78,6 +80,8 @@ public class TransactionService {
                 .toAccount(toAccount.getAccountNumber())
                 .currencyCode(toAccount.getCurrencyCode())
                 .build();
+
+        producer.messageProducer(TRANSACTION_TOPIC, transaction);
 
         if(fromAccount.getBalance() < transactionSchema.getAmount()) {
             producer.messageProducer(CONFLICTED_TOPIC, new HashMap<>());
