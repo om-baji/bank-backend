@@ -7,5 +7,4 @@ public enum TransactionStatus {
     CANCELLED,
     WAITING,
     FAILED,
-    TERMINATED
 }
