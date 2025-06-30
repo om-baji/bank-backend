@@ -2,6 +2,10 @@ package com.bank.notification_service.models;
 
 import com.bank.notification_service.enums.TransactionStatus;
 import com.bank.notification_service.enums.TransactionType;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -13,8 +17,11 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Entity
 public class Transaction {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.UUID)
     private String id;
 
     private Long amount;

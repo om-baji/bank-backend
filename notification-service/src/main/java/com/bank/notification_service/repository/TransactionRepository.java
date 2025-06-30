@@ -8,9 +8,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface TransactionRepository extends CrudRepository<String, Transaction> {
+public interface TransactionRepository extends CrudRepository<Transaction,String> {
 
     Optional<Transaction> findById(String id);
 
-    List<Transaction> findAllUserId(String id);
+    List<Transaction> findAllByUserId(String id);
 }

@@ -1,7 +1,6 @@
 package com.bank.notification_service.service;
 
 import com.bank.notification_service.enums.NotificationType;
-import com.bank.notification_service.enums.TransactionType;
 import com.bank.notification_service.models.Transaction;
 import com.bank.notification_service.models.UserLookup;
 import com.bank.notification_service.repository.TransactionRepository;
@@ -10,7 +9,6 @@ import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -32,7 +30,7 @@ public class NotificationService {
     private JavaMailSender sender;
 
     public void statementNotification(NotificationType type, String userId) {
-        Optional<UserLookup> exist = userLookupRepository.findByUserId(userId);
+        Optional<UserLookup> exist = userLookupRepository.findById(userId);
 
         if (exist.isEmpty()) {
             log.warn("User not found for userId: {}", userId);
@@ -40,7 +38,7 @@ public class NotificationService {
         }
 
         UserLookup user = exist.get();
-        List<Transaction> transactions = transactionRepository.findAllUserId(userId);
+        List<Transaction> transactions = transactionRepository.findAllByUserId(userId);
 
         if (transactions.isEmpty()) {
             log.info("No transactions found for user: {}", userId);
@@ -122,7 +120,7 @@ public class NotificationService {
 
     public void transactionNotification(Transaction transaction) {
 
-        Optional<UserLookup> exist = userLookupRepository.findByUserId(transaction.getUserId());
+        Optional<UserLookup> exist = userLookupRepository.findById(transaction.getUserId());
 
         if (exist.isEmpty()) {
             log.warn("User not found for userId: {}", transaction.getUserId());
