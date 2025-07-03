@@ -2,6 +2,8 @@
 .idea/
 *.iml
 
+.idea/**
+.idea/*.xml
 # Ignore OS files
 .DS_Store
 
