@@ -15,7 +15,6 @@ jobs:
           - account-service
           - manager-service
           - notification-service
-          - statement-service
           - transaction-service
           - user-service
           - discovery-service
