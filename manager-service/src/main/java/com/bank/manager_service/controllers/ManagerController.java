@@ -39,4 +39,9 @@ public class ManagerController {
     public ResponseEntity<?> verifyManager() {
         return managerService.checkManager();
     }
+
+    @GetMapping("/new-accounts")
+    public ResponseEntity<?> newAccounts() {
+        return managerService.fetchAccounts();
+    }
 }

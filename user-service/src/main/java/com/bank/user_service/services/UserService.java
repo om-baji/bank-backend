@@ -43,9 +43,9 @@ public class UserService {
     private final BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder(12);
 
     public ResponseEntity<?> saveUser(RegisterSchema registerSchema) {
-
+        log.info(String.valueOf(registerSchema));
         if (userRepository.existsByEmail(registerSchema.getEmail()) ||
-                userRepository.existsByUsername(registerSchema.getUsername())) {
+                registerSchema.getUsername() != null && userRepository.existsByUsername(registerSchema.getUsername())) {
 
             log.warn("Registration failed: Username or Email already exists.");
             return ResponseEntity.status(HttpStatus.CONFLICT)
@@ -95,20 +95,28 @@ public class UserService {
     }
 
     public String loginUser(LoginSchema schema) {
+        try {
+            Authentication authentication =
+                    authenticationManager.authenticate(
+                            new UsernamePasswordAuthenticationToken(
+                                    schema.getUsername(), schema.getPassword()
+                            )
+                    );
 
-        Authentication authentication =
-                authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(schema.getUsername(),schema.getPassword()));
+            if (!authentication.isAuthenticated()) return null;
 
-        UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
+            UserPrinciple userPrinciple = (UserPrinciple) authentication.getPrincipal();
 
-        Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            List<String> roles = authorities.stream()
+                    .map(GrantedAuthority::getAuthority)
+                    .collect(Collectors.toUnmodifiableList());
 
-        List<String> roles = authorities.stream().map(grantedAuthority -> grantedAuthority.toString())
-                .collect(Collectors.toUnmodifiableList());
+            return service.generateToken(schema.getUsername(), roles, userPrinciple.getUserId());
 
-        if(authentication.isAuthenticated()) return service.generateToken(schema.getUsername(),roles,userPrinciple.getUserId());
-
-        return  null;
+        } catch (Exception e) {
+            return null;
+        }
     }
 
     public ResponseEntity<?> saveAdmin(RegisterSchema schema) {
@@ -143,7 +151,7 @@ public class UserService {
     public ResponseEntity<?> saveManager(RegisterSchema schema) {
 
         if (userRepository.existsByEmail(schema.getEmail()) ||
-                userRepository.existsByUsername(schema.getUsername())) {
+                schema.getUsername() != null && userRepository.existsByUsername(schema.getUsername())) {
 
             log.warn("Registration failed: Username or Email already exists.");
             return ResponseEntity.status(HttpStatus.CONFLICT)

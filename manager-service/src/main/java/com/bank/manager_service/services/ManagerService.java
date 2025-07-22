@@ -1,8 +1,11 @@
 package com.bank.manager_service.services;
 
+import com.bank.manager_service.enums.AccountStatus;
 import com.bank.manager_service.helpers.Helper;
+import com.bank.manager_service.models.Account;
 import com.bank.manager_service.models.Transaction;
 import com.bank.manager_service.models.Users;
+import com.bank.manager_service.repository.AccountRepository;
 import com.bank.manager_service.repository.UserRepository;
 import com.bank.manager_service.schemas.ApiResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +20,9 @@ public class ManagerService {
 
     @Autowired
     private UserRepository repository;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     private Helper helper;
@@ -73,5 +79,12 @@ public class ManagerService {
     public Transaction getPendingTxnsById(String id) {
 
         return new Transaction();
+    }
+
+    public ResponseEntity<?> fetchAccounts() {
+
+        List<Account> list = accountRepository.findAllByStatus(AccountStatus.UNAUTHORISED);
+
+        return ResponseEntity.status(200).body(list);
     }
 }
